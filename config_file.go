@@ -1,4 +1,6 @@
-TimeStamp: "2018-07-16 10:23:19"
+package wed
+
+var configVar = `TimeStamp: "2018-07-16 10:23:19"
 App: 
   Port: "9000"
   Debug: True
@@ -10,7 +12,6 @@ redis:
   password: ""
   db: 0
 mysql:
-  driver: "mysql"
   uri:
     "root:123456@tcp(localhost:3306)/user?charset=utf8&parseTime=True&loc=Local&multiStatements=true"
 jwt:
@@ -23,4 +24,4 @@ AliyunSMS:
   AccessKeyID: "ddddddddddddddddd"
   AccessKeySecret: "dsssssssss"
   SignName: "sd"
-  TemplateCode: "dsfsdf"
+  TemplateCode: "dsfsdf"`

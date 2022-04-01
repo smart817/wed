@@ -26,8 +26,7 @@ type redis struct {
 	DB        int
 }
 type mysqlt struct {
-	Driver string
-	Uri    string
+	Uri string
 }
 type jwtt struct {
 	Secret string

@@ -3,8 +3,6 @@ package wed
 import (
 	"context"
 	"fmt"
-	"io"
-	"net/http"
 	"os"
 	"time"
 
@@ -23,29 +21,22 @@ var Mongodb *qmgo.Database
 var config AllConfig
 
 func init() {
-	const configFile = "./config.yaml"
-	if _, err := os.Stat(configFile); err != nil {
-		downConfig()
-		fmt.Println("miss config.yaml file")
-		//os.Exit(1)
+	const configFileUrl = "./config.yaml"
+	if _, err := os.Stat(configFileUrl); err != nil {
+		f, err := os.OpenFile("./config.yaml", os.O_CREATE|os.O_RDWR, 0666)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		f.Write([]byte(configVar))
+		f.Close()
+		fmt.Println("config.yaml created")
+		os.Exit(1)
 	}
 	viper := viper.New()
-	viper.SetConfigFile(configFile)
+	viper.SetConfigFile(configFileUrl)
 	viper.ReadInConfig()
 	viper.MergeInConfig()
 	viper.Unmarshal(&config)
-}
-func downConfig() {
-	url := "https://github.com/smart817/wed/config.yaml"
-	res, err := http.Get(url)
-	if err != nil {
-		panic(err)
-	}
-	f, err := os.Create("config.yaml")
-	if err != nil {
-		panic(err)
-	}
-	io.Copy(f, res.Body)
 }
 
 func Run(f func(r *gin.Engine)) {
