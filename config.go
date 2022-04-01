@@ -41,7 +41,7 @@ type aliyunSMS struct {
 	TemplateCode    string
 }
 
-var configVar = `TimeStamp: "2018-07-16 10:23:19"
+var configYaml = `TimeStamp: "2018-07-16 10:23:19"
 App: 
   Port: "9000"
   Debug: True
