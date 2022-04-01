@@ -36,7 +36,7 @@ func init() {
 	viper.Unmarshal(&config)
 }
 func downConfig() {
-	url := "https://github.com/smart817/wegin/config.yaml"
+	url := "https://github.com/smart817/wed/config.yaml"
 	res, err := http.Get(url)
 	if err != nil {
 		panic(err)
