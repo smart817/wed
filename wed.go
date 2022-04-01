@@ -18,7 +18,7 @@ import (
 )
 
 var Mongo_db *qmgo.Database
-var Mysql_db *gorm.DB
+var MySQL_db *gorm.DB
 
 var config AllConfig
 
@@ -69,7 +69,7 @@ func Mongo() {
 	cli.EnsureIndexes(ctx, []string{"phoneNo"}, []string{}) //唯一索引
 }
 
-func Mysql() {
+func MySQL() {
 	//dns := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", config.Mysql.UserName, config.Mysql.Password, config.Mysql.Addr, config.Mysql.DB)
 	mysqldb, mysqlError := gorm.Open(mysql.New(mysql.Config{
 		DSN:               config.Mysql.Uri,
@@ -87,11 +87,11 @@ func Mysql() {
 		},
 	})
 	if mysqlError != nil {
-		fmt.Println("Myslq连接失败：", mysqlError)
+		fmt.Println("MySQL连接失败：", mysqlError)
 		os.Exit(1)
 	}
-	Mysql_db = mysqldb
-	fmt.Println("Myslq连接成功")
+	MySQL_db = mysqldb
+	fmt.Println("MySQL连接成功")
 	// 迁移数据表，在没有数据表结构变更时候，建议注释不执行
 	//_ = db.AutoMigrate(&User{}, &Article{}, &Category{}, Profile{}, Comment{})
 	sqlDB, _ := mysqldb.DB()
