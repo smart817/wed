@@ -27,10 +27,9 @@ func init() {
 		if err != nil {
 			fmt.Println(err.Error())
 		}
-		f.Write([]byte(configVar))
+		f.Write([]byte(configYaml))
 		f.Close()
 		fmt.Println("config.yaml created")
-		os.Exit(1)
 	}
 	viper := viper.New()
 	viper.SetConfigFile(configFileUrl)
@@ -69,11 +68,10 @@ func Mongo() {
 }
 
 var MysqlDb *gorm.DB
-var MysqlError error
 
 func Mysql() {
 	//dns := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", config.Mysql.UserName, config.Mysql.Password, config.Mysql.Addr, config.Mysql.DB)
-	MysqlDb, MysqlError = gorm.Open(mysql.New(mysql.Config{
+	MysqlDb, mysqlError := gorm.Open(mysql.New(mysql.Config{
 		DSN:               config.Mysql.Uri,
 		DefaultStringSize: 256, // string 类型字段的默认长度
 	}), &gorm.Config{
@@ -84,16 +82,16 @@ func Mysql() {
 		// 禁用默认事务（提高运行速度）
 		//SkipDefaultTransaction: true,
 		NamingStrategy: schema.NamingStrategy{
-			TablePrefix:   "gee_", // 表名前缀，`User` 的表名应该是 `t_users`
-			SingularTable: true,   // 使用单数表名，启用该选项，此时，`User` 的表名应该是 `gee_user`
+			TablePrefix:   config.Mysql.TablePrefix, // 表名前缀，`User` 的表名应该是 `t_users`
+			SingularTable: true,                     // 使用单数表名，启用该选项，此时，`User` 的表名应该是 `gee_user`
 		},
 	})
 
-	if MysqlError != nil {
-		fmt.Println("Myslq连接失败：", MysqlError)
+	if mysqlError != nil {
+		fmt.Println("Myslq连接失败：", mysqlError)
 		os.Exit(1)
 	}
-
+	fmt.Println("Myslq连接成功")
 	// 迁移数据表，在没有数据表结构变更时候，建议注释不执行
 	//_ = db.AutoMigrate(&User{}, &Article{}, &Category{}, Profile{}, Comment{})
 
